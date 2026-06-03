@@ -75,4 +75,22 @@ plugins:
 
 # Navigation
 nav:
-  - Introduction: index.md
+  - Home: index.md
+  - About:
+    - Introduction: introduction.md
+    - Why ADP?: why.md
+    - Comparisons: comparisons.md
+    - FAQ: faq.md
+    - Contributors: contributors.md
+  - Guides:
+    - How to publish: how_to_publish.md
+    - How clients discover: how_agents_search.md
+    - How to build a discovery service: how_to_build_search.md
+  - Specifications:
+    - ADP Specification: spec.md
+    - AI Catalog Spec: ai_catalog_spec.md
+  - Ecosystem:
+    - Implementations: implementations.md
+    - Open Plugins: open_plugins.md
+    - Anthropic's MCP Registry: anthropic_mcp.md
+    - Zed's ACP Registry: zed_acp.md
