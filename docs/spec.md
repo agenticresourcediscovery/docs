@@ -229,7 +229,7 @@ An agent hosted on Hugging Face Spaces (MCP), published in a manifest:
       "identifier": "urn:ai:hf.co:alice-dev:weather-agent",
       "displayName": "Weather Agent",
       "type": "application/mcp-server+json",
-      "inline": {
+      "data": {
         "name": "Weather Agent",
         "description": "Simple weather lookup using open data",
         "tools": [
@@ -492,7 +492,7 @@ The response returns standard catalog entries with additional relevance scores, 
     {
       "identifier": "urn:ai:nlweb.ai:registry:public",
       "displayName": "Public Agent Finder",
-      "type": "application/ai-registry",
+      "type": "application/ai-registry+json",
       "url": "https://finder.nlweb.ai/search"
     }
   ],
@@ -589,7 +589,7 @@ Deterministic browsing, designed for developer portals. Highly cacheable, relies
 | pageSize | Integer | Max results (default: 20, max: 100). |
 | pageToken | String | Pagination token. |
 
-### 7.3 Protocol Wrappers (Optional)
+### 7.5 Protocol Wrappers (Optional)
 
 While the REST API is mandated as the floor for interoperability, a Registry **MAY** additionally expose its search capability natively via an MCP Tool or an A2A Skill to preserve native orchestrator flows.
 
@@ -634,15 +634,15 @@ This gives the client full control over the federation topology without requirin
   ],
   "referrals": [
     {
-      "identifier": "urn:ai:blweb.ai:registry:public",
+      "identifier": "urn:ai:nlweb.ai:registry:public",
       "displayName": "Public Agent Finder",
-      "type": "application/ai-registry",
+      "type": "application/ai-registry+json",
       "url": "https://finder.nlweb.ai/search"
     },
     {
       "identifier": "urn:ai:example.com:registry:travel",
       "displayName": "Travel Agent Finder",
-      "mediaType": "application/ai-registry",
+      "type": "application/ai-registry+json",
       "url": "https://travel.finder.example/search"
     }
   ]
