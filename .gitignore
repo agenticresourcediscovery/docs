@@ -153,3 +153,5 @@ site/
 # mkdocs build / staticrypt artifacts
 encrypted/
 .staticrypt.json
+# Local docs preview venv
+.venv-docs/

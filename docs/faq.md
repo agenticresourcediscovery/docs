@@ -1,30 +1,5 @@
 # Frequently Asked Questions (FAQ)
 
-## Is ARDS a replacement for MCP or OpenAPI?
-
-**No.** ARDS is a **discovery protocol (an envelope)**, not an execution protocol. It wraps existing execution standards (like MCP, A2A, and OpenAPI) using standard and proposed IANA media types so clients can find agentic resources dynamically. Once discovered, the client connects to and invokes the agentic resource using its native protocol (e.g., JSON-RPC for MCP).
-
----
-
-## How is ARDS different from built-in tool search in AI clients?
-
-They're closely related. At one level, a client's built-in tool search is itself an implementation of agentic resource discovery — scoped to the tools that client already has. It chooses among a known, client-managed set, which works well within that boundary.
-
-ARDS describes the same idea more generally, and decouples discovery from any single client. The capabilities a task might need can come from many places — internal systems, vendor services, public catalogs, Skills, MCP servers, APIs, workflows, or agents — and ARDS lets a client or organization discover which of them should be available in the first place, rather than that universe being fixed by the client implementation.
-
-The two compose naturally. An ARDS discovery service can produce a policy-filtered toolbox that a client's built-in tool search then ranks over, or a client can query the discovery service dynamically at task time. Because discovery is decoupled, ranking and filtering can also draw on signals a single client usually can't see on its own: policy, permissions, provenance, trust, usage history, success rates, cost, latency, region, compliance requirements, and deprecation state.
-
-Decoupling discovery from the client is what makes this useful in practice:
-
-- **Enterprise control** — an organization can decide which resources are approved, and which are *preferred* for a given task, and apply policy, permissions, and compliance rules once, centrally, instead of configuring every client by hand.
-- **Federation** — discovery services compose. A company can run its own service that merges internal resources with selected vendor and public sources and expose it as a single endpoint, while still controlling what is included.
-- **Portability** — because the discovery layer is separate, the same resources can be found and used across different AI clients and harnesses, rather than being locked to one client's tool universe.
-- **Independent evolution** — resources can be added, updated, or deprecated without changing the client; a newly published capability becomes discoverable the moment a service indexes it.
-
-In short: built-in tool search selects among known tools; ARDS is the layer that decides which tools should be known — and a client's tool search is one natural way to consume it.
-
----
-
 ## How does discovery work without consuming context window tokens?
 
 Traditional tool selection requires stuffing every available schema into the system prompt. ARDS moves this calculation outside the LLM into a dedicated discovery service (`POST /search`). The orchestrator queries the service with natural language, and it returns only the top two or three most relevant schemas to inject into the prompt.
@@ -34,12 +9,6 @@ Traditional tool selection requires stuffing every available schema into the sys
 ## Do I need to register my agentic resources on a central directory?
 
 **No.** You have absolute publishing sovereignty. You host `ai-catalog.json` on your own domain (`yourdomain.com/.well-known/ai-catalog.json`) to advertise your agentic resources. Any compliant discovery service can find and index your endpoint organically, without requiring permission.
-
----
-
-## What is the difference between ARDS and Agent Finder?
-
-ARDS is the **protocol**. **Agent Finder** is a product — one discovery service built on ARDS, among the many the protocol makes possible. A publisher describes an agentic resource once; any number of discovery services, named or not, can then choose to index and serve it.
 
 ---
 

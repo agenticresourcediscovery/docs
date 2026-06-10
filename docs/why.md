@@ -53,20 +53,23 @@ urn:ai:acme.com:finance:trading
 
 ARDS operates on a simple envelope design using standard and proposed **IANA media types** (like `application/mcp-server+json` or `application/a2a-agent-card+json`) to wrap different protocols, delegating execution details to the underlying schemas.
 
+A discovery service answers queries over a **collection it curates — and that collection can be assembled in many ways.** ARDS standardizes how resources are *described* (the `ai-catalog.json` envelope) and *searched* (a REST interface); it does not dictate how a given service builds or ranks its collection.
+
 ```mermaid
 sequenceDiagram
     participant Client as Orchestrator / LLM
     participant Service as Discovery Service
-    participant Publisher as Publisher Domain
+    participant Source as Resource source
 
-    Publisher->>Publisher: Hosts /.well-known/ai-catalog.json
-    Service->>Publisher: Ingests static catalog
-    Client->>Service: POST /search { "query": "expense filing" }
-    Service-->>Client: Returns ranked agentic resource schemas + FQDNs
-    Client->>Publisher: Connects & executes (MCP / REST)
+    Note over Source,Service: A service builds its collection however it chooses —<br/>crawling published ai-catalog.json files, ingesting git / npm / OCI<br/>or vendor feeds, importing an internal inventory, or curating by hand
+    Source->>Service: Resource enters the collection
+    Note over Service: Curates & indexes for search
+    Client->>Service: POST /search (text + filters)
+    Service-->>Client: Ranked entries (schema + endpoint)
+    Client->>Source: Connect & execute over native protocol (MCP / A2A / REST)
 ```
 
-1.  **Publish**: You host an `ai-catalog.json` at your domain's `.well-known/` directory.
-2.  **Index**: Discovery services index your manifest and generate vector embeddings from your `representativeQueries`.
-3.  **Search**: Clients query a discovery service (`POST /search`) with natural language.
-4.  **Execute**: The client gets back the exact agentic resource schema and endpoint URL, connecting dynamically over the agentic resource's own protocol.
+1.  **Describe**: A resource is described with an AI Catalog entry. Publishers can advertise their `ai-catalog.json` in several ways — a `.well-known/ai-catalog.json` URI, an `Agentmap` directive in `robots.txt`, an HTML `<link rel="ai-catalog">`, or DNS records — but publishing is only one way a resource enters a collection.
+2.  **Curate**: A discovery service builds its collection however it chooses. Every registry must support crawling published catalogs; beyond that, a registry may ingest other sources (git, npm, or OCI registries) or apply its own curation — internal inventories, vendor feeds, hand-picked lists — and index it for search by whatever method it likes.
+3.  **Search**: Clients query a discovery service (`POST /search`) with natural-language text and optional structured filters, and get back the most relevant entries — each with its schema and endpoint.
+4.  **Execute**: The client connects directly and runs the resource over its own protocol (MCP, A2A, REST…).

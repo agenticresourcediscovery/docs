@@ -7,8 +7,6 @@ site_description: A protocol for discovering agentic resources — tools, Skills
 theme:
   name: material
   custom_dir: overrides
-  logo: assets/logo.svg
-  favicon: assets/logo.svg
   font:
     text: Outfit
     code: Fira Code
@@ -56,15 +54,24 @@ markdown_extensions:
   - toc:
       permalink: true
 
+# Hide the "Made with Material for MkDocs" footer attribution
+extra:
+  generator: false
+
 # Custom CSS
 extra_css:
   - stylesheets/custom.css
   - stylesheets/homepage.css
+  - stylesheets/nav.css
 
 # Plugins
 # Empty list (not omitted) so MkDocs does NOT re-enable its default `search`
 # plugin — this removes the header search box.
-plugins: []
+plugins:
+  # `comparisons` was renamed to `interoperability`; keep the old URL working.
+  - redirects:
+      redirect_maps:
+        comparisons.md: interoperability.md
 
 # Navigation
 nav:
@@ -72,7 +79,7 @@ nav:
   - About:
     - Introduction: introduction.md
     - Why ARDS?: why.md
-    - Comparisons: comparisons.md
+    - Interoperability: interoperability.md
     - Contributors: contributors.md
     - FAQ: faq.md
   - Guides:
