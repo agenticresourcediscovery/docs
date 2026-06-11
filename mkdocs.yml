@@ -86,7 +86,6 @@ nav:
   - Guides:
     - How to publish: how_to_publish.md
     - How clients discover: how_agents_search.md
-    - How to build a discovery service: how_to_build_search.md
   - Specifications:
     - ARDS Specification: spec.md
     - AI Catalog Spec: ai_catalog_spec.md
